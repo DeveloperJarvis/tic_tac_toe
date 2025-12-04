@@ -61,4 +61,5 @@ void game_end();
 void display_game();
 void player_move(int player);
 void clear_screen();
+void clear_input_buffer();
 #endif

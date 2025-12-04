@@ -101,7 +101,7 @@ void game_logic()
 			game_end();
 		}
 		// Switch player after each valid move
-		i = 1 - 1; // Switch player between 0 and 1
+		i = 1 - i; // Switch player between 0 and 1
 	}
 }
 
@@ -128,7 +128,7 @@ const char *game_state()
 {
 	// Check for winner (rows, columns, diagonals)
 	// Check diagonals
-	printf("game state");
+	// printf("game state");
 	if (game[0][0] == game[1][1] && game[1][1] == game[2][2] && game[0][0] != -1)
 		return (game[0][0] == 1) ? "1wins" : "2wins"; // Player 1 or Player 2 wins
 	else if (game[0][2] == game[1][1] && game[1][1] == game[2][0] && game[0][2] != -1)
@@ -160,7 +160,7 @@ const char *game_state()
 
 void display_game()
 {
-	clear_screen();
+	// clear_screen();
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -184,6 +184,7 @@ void game_end()
 	while (1)
 	{
 		choice = getchar(); // Get user input
+		printf("%c", choice);
 		while (getchar() != '\n')
 			; // Clear imput buffer
 		if (choice == 'y' || choice == 'Y')
@@ -216,15 +217,17 @@ void player_move(int player)
 		printf("Player %d, enter your move (row and column)(e.g., 0 0): ", player);
 		if (scanf("%d %d", &row, &col) != 2)
 		{
-			printf("1debug: '%d' '%d'\n", row, col);
+			// printf("1debug: '%d' '%d'\n", row, col);
 			printf("Invalid Input. Please enter two integers between 0 and 2.\n");
+			clear_input_buffer();
 			continue;
 		}
-		else if (row < 0 || row >= 3 || col < 0 || col >= 3 || game[row][col] == -1)
+		else if ((row < 0 || row >= 3) ||
+				 (col < 0 || col >= 3) || game[row][col] != -1)
 		{
-			printf("2debug: '%d' '%d'\n", row, col);
+			// printf("2debug: '%d' '%d'\n", row, col);
 			printf("Invalid move. Try again.\n");
-			player_move(player);
+			continue;
 		}
 		else
 		{
@@ -237,4 +240,11 @@ void player_move(int player)
 void clear_screen()
 {
 	CLEAR_SCREEN;
+}
+
+void clear_input_buffer()
+{
+	int ch;
+	while ((ch = getchar()) != '\n' || ch != EOF)
+		; // clear input buffer
 }
